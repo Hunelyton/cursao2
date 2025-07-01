@@ -22,7 +22,7 @@
     - Express;
     - JWT (Controle de token/refresh-token);
     - Firebase (Armazenamento de imagens);
-    - MongoDB (Banco de dados NoSQL);
+    - MySQL (Banco de dados relacional);
     - JEST (Testes unitários);
 </ul>
 

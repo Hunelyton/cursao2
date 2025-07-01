@@ -1,4 +1,3 @@
-import { Types } from 'mongoose'
 import { User } from '../../entities/user'
 import { INewUserDTO, IUsersRepository } from './IUsersRepository'
 
@@ -7,9 +6,9 @@ export class MockUsersRepository implements IUsersRepository {
   async create(newUserData: INewUserDTO): Promise<User> {
     const newUser = {
       ...newUserData,
-      _id: new Types.ObjectId(),
+      id: Math.random().toString(),
       avatar: null,
-    }
+    } as unknown as User
     this.users.push(newUser)
 
     return newUser
@@ -20,14 +19,14 @@ export class MockUsersRepository implements IUsersRepository {
   }
 
   async findById(_id: string): Promise<User> {
-    return this.users.find((user) => user._id.toString() === _id)
+    return this.users.find((user) => (user as any).id === _id)
   }
 
   async update(filters: any, updateFields: any): Promise<void> {
     const fields = updateFields.$set
 
     const indexToUpdate = this.users.findIndex(
-      (user) => user._id.toString() === filters._id,
+      user => (user as any).id === filters.id,
     )
 
     if (indexToUpdate !== -1) {
@@ -39,6 +38,6 @@ export class MockUsersRepository implements IUsersRepository {
   }
 
   async delete(idUser: string): Promise<void> {
-    this.users = this.users.filter((user) => user._id.toString() !== idUser)
+    this.users = this.users.filter(user => (user as any).id !== idUser)
   }
 }

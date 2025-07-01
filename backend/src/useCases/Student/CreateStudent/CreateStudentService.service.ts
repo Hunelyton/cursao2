@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt'
 import { IUsersRepository } from '../../../repositories/Users/IUsersRepository'
 import { User } from '../../../entities/user'
 import { AppError } from '../../../shared/errors/AppError'
-import { Types } from 'mongoose'
 const saltRounds = 10
 
 interface IRequest {
@@ -15,13 +14,13 @@ interface IRequest {
 }
 
 interface IResponse {
-  _id: Types.ObjectId
+  id: string
   code: string
   name: string
   email: string
   occupation: string
   avatar: string
-  teacher: Types.ObjectId | User
+  teacher: string | User
 }
 
 @injectable()
@@ -61,7 +60,7 @@ export class CreateStudentService {
     })
 
     return {
-      _id: newStudent._id,
+      id: newStudent.id,
       code: newStudent.code,
       name: newStudent.name,
       email: newStudent.email,

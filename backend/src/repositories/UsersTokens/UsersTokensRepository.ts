@@ -1,14 +1,15 @@
-import { Model } from 'mongoose'
-import { IUserToken, UserTokenModel } from '../../entities/userToken'
+import { Repository } from 'typeorm'
+import { IUserToken, UserToken } from '../../entities/userToken'
 import {
   ICreateUserTokenDTO,
   IUsersTokensRepository,
 } from './IUsersTokensRepository'
+import { AppDataSource } from '../../shared/infra/mysql/data-source'
 
 export class UsersTokensRepository implements IUsersTokensRepository {
-  private model: Model<IUserToken>
+  private repository: Repository<UserToken>
   constructor() {
-    this.model = UserTokenModel
+    this.repository = AppDataSource.getRepository(UserToken)
   }
 
   async create({
@@ -16,14 +17,12 @@ export class UsersTokensRepository implements IUsersTokensRepository {
     expiresDate,
     refreshToken,
   }: ICreateUserTokenDTO): Promise<IUserToken> {
-    const token = await this.model.create({
-      user,
+    const token = this.repository.create({
+      user: user ? ({ id: user } as any) : undefined,
       expiresDate,
       refreshToken,
     })
-
-    await token.save()
-
+    await this.repository.save(token)
     return token
   }
 
@@ -31,14 +30,14 @@ export class UsersTokensRepository implements IUsersTokensRepository {
     user: string,
     refreshToken: string,
   ): Promise<IUserToken> {
-    return await this.model.findOne({ user, refreshToken })
+    return await this.repository.findOne({ where: { user: { id: user } as any, refreshToken } })
   }
 
   async deleteById(tokenId: string): Promise<void> {
-    await this.model.deleteOne({ _id: tokenId })
+    await this.repository.delete({ id: tokenId })
   }
 
   async findByRefreshToken(refreshToken: string): Promise<IUserToken> {
-    return await this.model.findOne({ refreshToken })
+    return await this.repository.findOne({ where: { refreshToken } })
   }
 }

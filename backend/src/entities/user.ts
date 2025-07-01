@@ -1,30 +1,40 @@
-import mongoose, { Types } from 'mongoose'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm'
 
-export interface User {
-  _id: Types.ObjectId
+@Entity('users')
+export class User {
+  @PrimaryGeneratedColumn('uuid')
+  id: string
+
+  @Column({ nullable: true })
   code: string
+
+  @Column()
   name: string
+
+  @Column()
   email: string
+
+  @Column()
   password: string
+
+  @Column()
   occupation: string
+
+  @Column({ nullable: true })
   avatar: string
+
+  @Column({ nullable: true })
   avatarURL: string
-  teacher: Types.ObjectId | User
+
+  @ManyToOne(() => User, user => user.students, { nullable: true })
+  teacher: User
+
+  @OneToMany(() => User, user => user.teacher)
+  students: User[]
+
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date
+
+  @Column({ type: 'int', default: 0 })
   warningsAmount: number
 }
-
-const userSchema = new mongoose.Schema({
-  code: { type: String, default: null },
-  name: { type: String, default: null, required: true },
-  email: { type: String, default: null, required: true },
-  password: { type: String, default: null, required: true },
-  occupation: { type: String, default: null, required: true },
-  avatar: { type: String, default: null },
-  avatarURL: { type: String, default: null },
-  teacher: { type: 'ObjectId', ref: 'User', default: null },
-  createdAt: { type: Date, default: Date.now },
-  warningsAmount: { type: Number, default: 0 },
-})
-
-export const UserModel = mongoose.model<User>('User', userSchema)

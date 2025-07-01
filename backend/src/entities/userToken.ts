@@ -1,21 +1,22 @@
-import mongoose, { Types } from 'mongoose'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
+import { User } from './user'
 
-export interface IUserToken {
-  _id: Types.ObjectId
-  user: Types.ObjectId
+@Entity('user_tokens')
+export class UserToken {
+  @PrimaryGeneratedColumn('uuid')
+  id: string
+
+  @ManyToOne(() => User)
+  user: User
+
+  @Column()
   refreshToken: string
+
+  @Column({ type: 'datetime' })
   expiresDate: Date
+
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date
 }
 
-const UserTokenSchema = new mongoose.Schema({
-  user: { type: 'ObjectId', ref: 'User', default: null },
-  refreshToken: { type: String, default: null },
-  expiresDate: { type: Date, default: null },
-  createdAt: { type: Date, default: Date.now },
-})
-
-export const UserTokenModel = mongoose.model<IUserToken>(
-  'UserToken',
-  UserTokenSchema,
-)
+export type IUserToken = UserToken

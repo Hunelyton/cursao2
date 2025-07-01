@@ -1,4 +1,3 @@
-import { Types } from 'mongoose'
 import { IUserToken } from '../../entities/userToken'
 import {
   ICreateUserTokenDTO,
@@ -16,9 +15,9 @@ export class MockUsersTokensRepository implements IUsersTokensRepository {
     const newUserToken = {
       expiresDate,
       refreshToken,
-      user: new Types.ObjectId(user),
+      user: user as any,
       createdAt: new Date(),
-      _id: new Types.ObjectId(),
+      id: Math.random().toString(),
     }
 
     this.usersTokens.push(newUserToken)
@@ -31,18 +30,14 @@ export class MockUsersTokensRepository implements IUsersTokensRepository {
     refreshToken: string,
   ): Promise<IUserToken> {
     const userToken = this.usersTokens.find(
-      (token) =>
-        token.refreshToken === refreshToken &&
-        token.user.toString() === userId.toString(),
+      token => token.refreshToken === refreshToken && (token.user as any) === userId,
     )
 
     return userToken
   }
 
   async deleteById(tokenId: string): Promise<void> {
-    this.usersTokens = this.usersTokens.filter(
-      (token) => token._id.toString() !== tokenId.toString(),
-    )
+    this.usersTokens = this.usersTokens.filter(token => (token as any).id !== tokenId)
   }
 
   async findByRefreshToken(refreshToken: string): Promise<IUserToken> {

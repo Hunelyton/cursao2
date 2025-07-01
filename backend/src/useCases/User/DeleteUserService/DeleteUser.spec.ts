@@ -1,4 +1,3 @@
-import { Types } from 'mongoose'
 import { AppError } from '../../../shared/errors/AppError'
 import { MockUsersRepository } from '../../../repositories/Users/MockUsersRepository'
 import { CreateNewUserService } from '../CreateNewUser/CreateNewUserService.service'
@@ -25,11 +24,9 @@ describe('Delete a user', () => {
       occupation: 'student',
     })
 
-    await deleteUserService.execute(newUser._id.toString())
+    await deleteUserService.execute(newUser.id)
 
-    const notFoundUser = await mockUsersRepository.findById(
-      newUser._id.toString(),
-    )
+    const notFoundUser = await mockUsersRepository.findById(newUser.id)
 
     expect(notFoundUser).toBeUndefined()
   })
@@ -43,9 +40,9 @@ describe('Delete a user', () => {
   it('should not be able delete a user if idUser is from invalid user', async () => {
     await expect(async () => {
       // _id aleatório, não pertence a nenhum usuário cadastrado, portanto é invalido.
-      const fakeIdUser = new Types.ObjectId()
+      const fakeIdUser = 'invalid-id'
 
-      await deleteUserService.execute(fakeIdUser.toString())
+      await deleteUserService.execute(fakeIdUser)
     }).rejects.toBeInstanceOf(AppError)
   })
 })
