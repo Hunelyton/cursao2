@@ -7,6 +7,7 @@ import { routes } from './src/shared/infra/http/routes'
 import './src/shared/containers'
 import { DataSource } from 'typeorm'
 import { handleError } from './src/shared/infra/http/middlewares/handleError'
+import 'dotenv/config'
 
 interface CustomExpress extends Express {
   dataSource?: DataSource
@@ -22,10 +23,10 @@ app.use(routes)
 app.use(handleError)
 
 AppDataSource.initialize()
-  .then(dataSource => {
+  .then((dataSource) => {
     app.dataSource = dataSource
     app.listen(PORT, () =>
-      console.log(`Servidor rodando na porta ${PORT}!`),
+      console.log(`Servidor rodando na porta ${PORT}!`)
     )
   })
   .catch(err =>
