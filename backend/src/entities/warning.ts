@@ -1,22 +1,26 @@
-import mongoose, { Types } from 'mongoose'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
+import { User } from './user'
 
-export interface Warning {
-  _id: Types.ObjectId | string
+@Entity('warnings')
+export class Warning {
+  @PrimaryGeneratedColumn('uuid')
+  id: string
+
+  @Column({ nullable: true })
   code: string
+
+  @Column()
   title: string
+
+  @Column({ nullable: true })
   description: string
-  student: Types.ObjectId
+
+  @ManyToOne(() => User, { nullable: true })
+  student: User
+
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   date: Date
+
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date
 }
-
-const warningSchema = new mongoose.Schema({
-  code: { type: String, default: null },
-  title: { type: String, default: null, required: true },
-  description: { type: String, default: null },
-  student: { type: 'ObjectId', ref: 'Student', default: null },
-  date: { type: Date, default: Date.now },
-  createdAt: { type: Date, default: Date.now },
-})
-
-export const WarningModel = mongoose.model<Warning>('Warning', warningSchema)

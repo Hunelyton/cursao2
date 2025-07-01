@@ -2,7 +2,6 @@ import { inject, injectable } from 'tsyringe'
 import { IUsersRepository } from '../../../repositories/Users/IUsersRepository'
 import bcrypt from 'bcrypt'
 import { AppError } from '../../../shared/errors/AppError'
-import { Types } from 'mongoose'
 const saltRounds = 10
 
 interface IRequest {
@@ -13,7 +12,7 @@ interface IRequest {
 }
 
 interface IResponse {
-  _id: Types.ObjectId
+  id: string
   code: string
   name: string
   email: string
@@ -55,7 +54,7 @@ export class CreateNewUserService {
     })
 
     return {
-      _id: newUser._id,
+      id: newUser.id,
       code: newUser.code,
       name: newUser.name,
       email: newUser.email,

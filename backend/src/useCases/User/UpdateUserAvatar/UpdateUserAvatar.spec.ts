@@ -1,4 +1,3 @@
-import { Types } from 'mongoose'
 import { AppError } from '../../../shared/errors/AppError'
 import { CreateNewUserService } from '../CreateNewUser/CreateNewUserService.service'
 import { MockUsersRepository } from './../../../repositories/Users/MockUsersRepository'
@@ -28,13 +27,11 @@ describe('Update user avatar', () => {
     const avatarFile = 'nome_do_avatar'
 
     await updateUserAvatarService.execute({
-      userId: newUser._id.toString(),
+      userId: newUser.id,
       avatarFile,
     })
 
-    const updatedAvatar = await mockUsersRepository.findById(
-      newUser._id.toString(),
-    )
+    const updatedAvatar = await mockUsersRepository.findById(newUser.id)
 
     expect(updatedAvatar.avatar).toEqual(`users/avatar/${avatarFile}`)
   })
@@ -55,7 +52,7 @@ describe('Update user avatar', () => {
       const avatarFile = 'nome_do_avatar'
 
       await updateUserAvatarService.execute({
-        userId: new Types.ObjectId().toString(),
+        userId: 'invalid-id',
         avatarFile,
       })
     }).rejects.toBeInstanceOf(AppError)
@@ -64,7 +61,7 @@ describe('Update user avatar', () => {
   it('should not be able update user avatar if avatarFile not sent', async () => {
     await expect(async () => {
       await updateUserAvatarService.execute({
-        userId: new Types.ObjectId().toString(),
+        userId: 'invalid-id',
         avatarFile: undefined,
       })
     }).rejects.toBeInstanceOf(AppError)

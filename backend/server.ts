@@ -1,29 +1,37 @@
 import 'reflect-metadata'
+import 'dotenv/config'
 import express, { Express, Request, Response } from 'express'
 import 'express-async-errors'
-import dbConnection from './src/shared/infra/mongodb/index'
+import { AppDataSource } from './src/shared/infra/mysql/data-source'
 import cors from 'cors'
 import { routes } from './src/shared/infra/http/routes'
 import './src/shared/containers'
-import { Mongoose } from 'mongoose'
+import { DataSource } from 'typeorm'
 import { handleError } from './src/shared/infra/http/middlewares/handleError'
 
 interface CustomExpress extends Express {
-  mongo?: Mongoose
+  dataSource?: DataSource
 }
 
 const app: CustomExpress = express()
 
 const PORT = process.env.SERVER_PORT
 
-app.mongo = dbConnection
-
 app.use(express.json())
 app.use(cors())
 app.use(routes)
 app.use(handleError)
 
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}!`))
+AppDataSource.initialize()
+  .then(dataSource => {
+    app.dataSource = dataSource
+    app.listen(PORT, () =>
+      console.log(`Servidor rodando na porta ${PORT}!`),
+    )
+  })
+  .catch(err =>
+    console.error('Erro ao conectar com o banco de dados', err),
+  )
 
 app.get('/', async (req: Request, res: Response) => {
   return res.status(200).send(`<h1>Servidor rodando na porta  ${PORT}</h1>`)

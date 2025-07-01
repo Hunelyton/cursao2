@@ -1,4 +1,3 @@
-import { Types } from 'mongoose'
 import { AppError } from '../../../shared/errors/AppError'
 import { MockUsersRepository } from './../../../repositories/Users/MockUsersRepository'
 import { GetUserInfoService } from './GetUserInfoService.service'
@@ -25,9 +24,9 @@ describe('Get user info', () => {
 
   it('should not be able search user info if idUser is from invalid user', async () => {
     await expect(async () => {
-      const idUser = new Types.ObjectId()
+      const idUser = 'invalid-id'
 
-      await getUserInfoService.execute(idUser.toString())
+      await getUserInfoService.execute(idUser)
     }).rejects.toBeInstanceOf(AppError)
   })
 
@@ -39,9 +38,7 @@ describe('Get user info', () => {
       occupation: 'student',
     })
 
-    const createdUser = await mockUsersRepository.findById(
-      newUser._id.toString(),
-    )
+    const createdUser = await mockUsersRepository.findById(newUser.id)
 
     expect(createdUser).toBeDefined()
   })

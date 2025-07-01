@@ -1,4 +1,3 @@
-import { Types } from 'mongoose'
 import { Warning } from '../../entities/warning'
 import { INewWarningDTO, IWarningsRepository } from './IWarningsRepository'
 
@@ -7,7 +6,7 @@ export class MockWarningsRepository implements IWarningsRepository {
 
   async list(idStudent: string): Promise<Warning[]> {
     const warnings = this.warnings.filter(
-      (warning) => warning.idStudent.toString() === idStudent,
+      warning => (warning.student as any) === idStudent,
     )
 
     return warnings
@@ -23,8 +22,8 @@ export class MockWarningsRepository implements IWarningsRepository {
       code,
       title,
       description,
-      idStudent: new Types.ObjectId(idStudent),
-      _id: new Types.ObjectId(),
+      student: idStudent as any,
+      id: Math.random().toString(),
       date: new Date(),
     }
 
@@ -33,13 +32,13 @@ export class MockWarningsRepository implements IWarningsRepository {
     return newWarning
   }
 
-  async findById(idWarning: string | Types.ObjectId): Promise<Warning> {
-    return this.warnings.find((warning) => warning._id.toString() === idWarning)
+  async findById(idWarning: string): Promise<Warning> {
+    return this.warnings.find(warning => warning.id === idWarning)
   }
 
   async getEntries(idStudent: string): Promise<number> {
     const warnings = this.warnings.filter(
-      (warning) => warning.idStudent.toString() === idStudent,
+      warning => (warning.student as any) === idStudent,
     )
 
     return warnings.length
