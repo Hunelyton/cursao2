@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+import 'dotenv/config'
 import express, { Express, Request, Response } from 'express'
 import 'express-async-errors'
 import { AppDataSource } from './src/shared/infra/mysql/data-source'
@@ -23,10 +24,12 @@ app.use(routes)
 app.use(handleError)
 
 AppDataSource.initialize()
-  .then((dataSource) => {
+
+  .then(dataSource => {
     app.dataSource = dataSource
     app.listen(PORT, () =>
-      console.log(`Servidor rodando na porta ${PORT}!`)
+      console.log(`Servidor rodando na porta ${PORT}!`),
+
     )
   })
   .catch(err =>
