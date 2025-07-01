@@ -1,4 +1,3 @@
-import { Types } from 'mongoose'
 import { ISubject } from '../../entities/subject'
 import {
   IInsertStudentDTO,
@@ -17,7 +16,7 @@ export class MockSubjectsRepository implements ISubjectsRepository {
     const newSubject = {
       ...newSubjectData,
       students: null,
-      _id: new Types.ObjectId(),
+      id: Math.random().toString(),
     }
 
     this.subjects.push(newSubject)
@@ -25,13 +24,13 @@ export class MockSubjectsRepository implements ISubjectsRepository {
     return newSubject
   }
 
-  async findById(idSubject: string | Types.ObjectId): Promise<ISubject> {
-    return this.subjects.find((subject) => subject._id.toString() === idSubject)
+  async findById(idSubject: string): Promise<ISubject> {
+    return this.subjects.find((subject) => (subject as any).id === idSubject)
   }
 
   async delete(idSubject: string): Promise<void> {
     this.subjects = this.subjects.filter(
-      (subject) => subject._id.toString() !== idSubject,
+      (subject) => (subject as any).id !== idSubject,
     )
   }
 
@@ -40,7 +39,7 @@ export class MockSubjectsRepository implements ISubjectsRepository {
     subjectId,
   }: IInsertStudentDTO): Promise<void> {
     const indexSubject = this.subjects.findIndex(
-      (subject) => subject._id.toString() === subjectId,
+      (subject) => (subject as any).id === subjectId,
     )
 
     if (indexSubject !== -1) {

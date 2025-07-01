@@ -1,22 +1,21 @@
-import { Model } from 'mongoose'
-import { Warning, WarningModel } from '../../entities/warning'
+import { Repository } from 'typeorm'
+import { Warning } from '../../entities/warning'
 import { IWarningsRepository, INewWarningDTO } from './IWarningsRepository'
+import { AppDataSource } from '../../shared/infra/mysql/data-source'
 
 export class WarningsRepository implements IWarningsRepository {
-  model: Model<Warning>
+  private repository: Repository<Warning>
   constructor() {
-    this.model = WarningModel
+    this.repository = AppDataSource.getRepository(Warning)
   }
 
   async list(idStudent?: string): Promise<Warning[]> {
-    const query = {
-      ...(idStudent ? { student: idStudent } : {}),
-    }
-    return await this.model.find(query).sort({ date: 1 })
+    const where = idStudent ? { student: { id: idStudent } as any } : {}
+    return await this.repository.find({ where, order: { date: 'ASC' } })
   }
 
   async findById(warningId: string): Promise<Warning | null> {
-    return await this.model.findOne({ _id: warningId })
+    return await this.repository.findOne({ where: { id: warningId } })
   }
 
   async create({
@@ -25,19 +24,17 @@ export class WarningsRepository implements IWarningsRepository {
     description,
     idStudent,
   }: INewWarningDTO): Promise<Warning> {
-    const newWarning = await this.model.create({
+    const newWarning = this.repository.create({
       code,
       title,
       description,
-      student: idStudent,
+      student: idStudent ? ({ id: idStudent } as any) : undefined,
     })
-
-    await newWarning.save()
-
+    await this.repository.save(newWarning)
     return newWarning
   }
 
   async getEntries(idStudent: string): Promise<number> {
-    return await this.model.countDocuments({ idStudent })
+    return await this.repository.count({ where: { student: { id: idStudent } as any } })
   }
 }

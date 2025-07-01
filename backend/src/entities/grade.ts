@@ -1,20 +1,24 @@
-import mongoose, { Types } from 'mongoose'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
+import { User } from './user'
+import { Subject } from './subject'
 
-export interface Grade {
-  _id: Types.ObjectId
-  student: Types.ObjectId
-  subject: Types.ObjectId
+@Entity('grades')
+export class Grade {
+  @PrimaryGeneratedColumn('uuid')
+  id: string
+
+  @ManyToOne(() => User, { nullable: true })
+  student: User
+
+  @ManyToOne(() => Subject, { nullable: true })
+  subject: Subject
+
+  @Column({ type: 'float', default: 0 })
   firstGrade: number
+
+  @Column({ type: 'float', default: 0 })
   secondGrade: number
+
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date
 }
-
-const gradeSchema = new mongoose.Schema({
-  student: { type: 'ObjectId', ref: 'User', default: null },
-  subject: { type: 'ObjectId', ref: 'Subject', default: null },
-  firstGrade: { type: Number, default: 0 },
-  secondGrade: { type: Number, default: 0 },
-  createdAt: { type: Date, default: Date.now },
-})
-
-export const GradeModel = mongoose.model<Grade>('Grade', gradeSchema)

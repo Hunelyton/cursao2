@@ -1,21 +1,26 @@
-import mongoose, { Types } from 'mongoose'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne, JoinTable } from 'typeorm'
 import { User } from './user'
 
-export interface ISubject {
-  _id: Types.ObjectId
+@Entity('subjects')
+export class Subject {
+  @PrimaryGeneratedColumn('uuid')
+  id: string
+
+  @Column({ nullable: true })
   code: string
+
+  @Column()
   name: string
-  students: Types.ObjectId[] | User[]
-  teacher: Types.ObjectId | User
+
+  @ManyToMany(() => User)
+  @JoinTable({ name: 'subjects_students' })
+  students: User[]
+
+  @ManyToOne(() => User, { nullable: true })
+  teacher: User
+
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date
 }
 
-const subjectSchema = new mongoose.Schema({
-  code: { type: String, default: null },
-  name: { type: String, default: null, required: true },
-  students: [{ type: 'ObjectId', ref: 'User', default: null }],
-  teacher: { type: 'ObjectId', ref: 'User', default: null },
-  createdAt: { type: Date, default: Date.now },
-})
-
-export const SubjectModel = mongoose.model<ISubject>('Subject', subjectSchema)
+export type ISubject = Subject
