@@ -34,6 +34,7 @@ export class CreateAttendanceService {
     code,
     password,
   }: INewAttendanceDTO): Promise<void> {
+    const normalizedDate = new Date(date)
     let student = null
     if (studentId) {
       student = await this.usersRepository.findByIdWithPassword(studentId)
@@ -59,14 +60,24 @@ export class CreateAttendanceService {
     if (!passwordMatch) throw new AppError('Código ou senha incorreto')
 
     const attendanceExists =
-      await this.attendancesRepository.findByStudentAndDate(resolvedStudentId, date)
+      await this.attendancesRepository.findByStudentAndDate(
+        resolvedStudentId,
+        normalizedDate,
+      )
 
-    const hasClass = await this.classLessonsRepository.findBySubjectAndDate(subjectId, date)
+    const hasClass = await this.classLessonsRepository.findBySubjectAndDate(
+      subjectId,
+      normalizedDate,
+    )
     if (!hasClass) throw new AppError('Nenhuma aula cadastrada para esta data')
 
     if (attendanceExists)
       throw new AppError('Presença deste dia já registrada')
 
-    await this.attendancesRepository.create({ studentId: resolvedStudentId, date, subjectId })
+    await this.attendancesRepository.create({
+      studentId: resolvedStudentId,
+      date: normalizedDate,
+      subjectId,
+    })
   }
 }
