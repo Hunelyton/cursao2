@@ -7,9 +7,16 @@ interface Props {
   rows: any[]
   loading: boolean
   emptyText?: string
+  onRowClick?: (row: any) => void
 }
 
-export function TableComponent({ columns, rows, loading, emptyText }: Props) {
+export function TableComponent({
+  columns,
+  rows,
+  loading,
+  emptyText,
+  onRowClick,
+}: Props) {
   return (
     <table style={loading ? { opacity: 0.5 } : {}} className={style.table}>
       <thead>
@@ -28,7 +35,7 @@ export function TableComponent({ columns, rows, loading, emptyText }: Props) {
           !loading &&
           rows?.map((row) => {
             return (
-              <tr key={row._id}>
+              <tr key={row._id} onClick={() => onRowClick && onRowClick(row)}>
                 {columns.map((column) => {
                   return (
                     <td

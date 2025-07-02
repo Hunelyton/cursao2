@@ -1,7 +1,24 @@
-.actionButton {
-  background-color: #cd1414;
+@import "../../../styles/colors.scss";
+
+.actionsTop {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.buttonAttendance,
+.buttonView {
   color: white;
   border: none;
   padding: 4px 8px;
   cursor: pointer;
+  border-radius: 4px;
+}
+
+.buttonAttendance {
+  background-color: $blue-color-500;
+}
+
+.buttonView {
+  background-color: $primary-color;
 }
