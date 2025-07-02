@@ -14,6 +14,7 @@ export class ListAttendancesService {
       _id: att._id,
       date: att.date,
       subject: (att.subject as any)?.name || '',
+      subjectId: (att.subject as any)?._id?.toString() || '',
     }))
   }
 }

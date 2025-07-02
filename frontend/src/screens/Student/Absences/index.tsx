@@ -16,30 +16,34 @@ interface Row {
 
 export function StudentAbsences() {
   const [rows, setRows] = useState<Row[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const user = usersService.getUserInfo()
     if (user?._id) {
+      setLoading(true)
       Promise.all([
         classLessonsService.getAll(),
         attendancesService.listByStudent(user._id),
-      ]).then(([lessRes, attRes]) => {
-        const lessons = lessRes.data.items || []
-        const attendances = attRes.data.items || []
-        const formatted = lessons.map((l: any) => {
-          const present = attendances.some((a: any) =>
-            dayjs(a.date).isSame(l.date, 'day'),
-          )
-          return {
-            _id: l._id,
-            date: dayjs(l.date).format('DD/MM/YYYY'),
-            subject: l.subject,
-            description: l.description,
-            status: present ? 'Presente' : 'Ausente',
-          }
+      ])
+        .then(([lessRes, attRes]) => {
+          const lessons = lessRes.data.items || []
+          const attendances = attRes.data.items || []
+          const formatted = lessons.map((l: any) => {
+            const present = attendances.some((a: any) =>
+              dayjs(a.date).isSame(l.date, 'day'),
+            )
+            return {
+              _id: l._id,
+              date: dayjs(l.date).format('DD/MM/YYYY'),
+              subject: l.subject,
+              description: l.description,
+              status: present ? 'Presente' : 'Ausente',
+            }
+          })
+          setRows(formatted)
         })
-        setRows(formatted)
-      })
+        .finally(() => setLoading(false))
     }
   }, [])
 
@@ -55,5 +59,5 @@ export function StudentAbsences() {
     },
   ]
 
-  return <TableComponent rows={rows} columns={columns} loading={false} />
+  return <TableComponent rows={rows} columns={columns} loading={loading} />
 }

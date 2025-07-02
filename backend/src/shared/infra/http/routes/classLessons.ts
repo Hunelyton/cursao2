@@ -9,5 +9,6 @@ classLessonRoutes.use(ensureAuthenticated)
 classLessonRoutes.post('/', classLessonController.create)
 classLessonRoutes.get('/', classLessonController.list)
 classLessonRoutes.put('/:id', classLessonController.update)
+classLessonRoutes.delete('/:id', classLessonController.delete)
 
 export { classLessonRoutes }

@@ -8,10 +8,11 @@ export class ClassLessonsRepository implements IClassLessonsRepository {
     this.model = ClassLessonModel
   }
 
-  async create({ subjectId, date }: INewClassLessonDTO): Promise<ClassLesson> {
+  async create({ subjectId, date, description }: INewClassLessonDTO): Promise<ClassLesson> {
     const newLesson = await this.model.create({
       subject: subjectId,
       date,
+      description,
     })
     await newLesson.save()
     return newLesson
@@ -21,11 +22,12 @@ export class ClassLessonsRepository implements IClassLessonsRepository {
     return await this.model.find().populate('subject').sort({ date: 1 })
   }
 
-  async update(
-    id: string,
-    data: Partial<INewClassLessonDTO & { description?: string }>,
-  ): Promise<void> {
+  async update(id: string, data: Partial<INewClassLessonDTO>): Promise<void> {
     await this.model.updateOne({ _id: id }, { $set: data })
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.model.deleteOne({ _id: id })
   }
 
   async findBySubjectAndDate(subjectId: string, date: Date): Promise<ClassLesson | null> {

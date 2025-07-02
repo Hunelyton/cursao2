@@ -15,8 +15,7 @@ export function ModalCreateClassLesson({ open, handleClose }: Props) {
   const { alertNotifyConfigs, setAlertNotifyConfigs } = useContext(AlertContext)
   const [subjectId, setSubjectId] = useState('')
   const [subjects, setSubjects] = useState<any[]>([])
-  const [date, setDate] = useState('')
-  const [password, setPassword] = useState('')
+  const [description, setDescription] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -31,7 +30,7 @@ export function ModalCreateClassLesson({ open, handleClose }: Props) {
     event.preventDefault()
     setLoading(true)
     classLessonsService
-      .create({ subjectId, date: new Date(date), teacherPassword: password })
+      .create({ subjectId, description })
       .then(() => {
         setAlertNotifyConfigs({
           ...alertNotifyConfigs,
@@ -78,16 +77,9 @@ export function ModalCreateClassLesson({ open, handleClose }: Props) {
         </Select>
       </FormControl>
       <CustomTextField
-        label="Data"
-        type="datetime-local"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-      />
-      <CustomTextField
-        label="Senha"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        label="Descrição"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
       />
     </ModalLayout>
   )

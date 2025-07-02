@@ -1,39 +1,49 @@
 @import "../../../../../styles/colors.scss";
 
-.list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.table {
+  width: 100%;
+  border-collapse: collapse;
 
-  .item {
+  th,
+  td {
+    padding: 0.5rem;
+    text-align: left;
+  }
+
+  thead {
     background: $gray-color-100;
-    color: $gray-color-400;
-    padding: 0.6rem;
-    border-radius: 10px;
-    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
   }
 
-  .editRow {
-    display: flex;
-    gap: 10px;
+  tbody tr:nth-child(even) {
+    background: $gray-color-100;
   }
+}
 
-  .editBtn {
-    background: $blue-color-500;
-    border: none;
-    color: $white-color;
-    padding: 4px 8px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
+.item {
+  color: $gray-color-400;
+}
 
-  .saveBtn {
-    @extend .editBtn;
-    background: $primary-color;
-  }
+.editRow {
+  display: flex;
+  gap: 10px;
+}
+
+.editBtn {
+  background: $blue-color-500;
+  border: none;
+  color: $white-color;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.saveBtn {
+  @extend .editBtn;
+  background: $primary-color;
+}
+
+.deleteBtn {
+  @extend .editBtn;
+  background: $red-color-500;
+  margin-left: 5px;
 }
