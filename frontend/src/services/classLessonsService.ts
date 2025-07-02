@@ -1,8 +1,8 @@
 import http from '../api/http'
 
 export const classLessonsService = {
-  create({ subjectId, description }: any) {
-    const body = { subjectId, description }
+  create({ subjectId, description, date }: any) {
+    const body = { subjectId, description, date }
     return http.post('/classLessons', body)
   },
 

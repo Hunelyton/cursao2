@@ -72,4 +72,8 @@ export class SubjectsRepository implements ISubjectsRepository {
       },
     )
   }
+
+  async listByStudent(idStudent: string): Promise<ISubject[]> {
+    return await this.model.find({ students: idStudent })
+  }
 }

@@ -16,6 +16,7 @@ export function ModalCreateClassLesson({ open, handleClose }: Props) {
   const [subjectId, setSubjectId] = useState('')
   const [subjects, setSubjects] = useState<any[]>([])
   const [description, setDescription] = useState('')
+  const [date, setDate] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export function ModalCreateClassLesson({ open, handleClose }: Props) {
     event.preventDefault()
     setLoading(true)
     classLessonsService
-      .create({ subjectId, description })
+      .create({ subjectId, description, date })
       .then(() => {
         setAlertNotifyConfigs({
           ...alertNotifyConfigs,
@@ -80,6 +81,14 @@ export function ModalCreateClassLesson({ open, handleClose }: Props) {
         label="Descrição"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
+      />
+      <CustomTextField
+        type="datetime-local"
+        label="Data"
+        InputLabelProps={{ shrink: true }}
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        required
       />
     </ModalLayout>
   )
