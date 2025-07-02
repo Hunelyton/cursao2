@@ -34,7 +34,7 @@ export function ModalAttendance({ open, handleClose }: Props) {
     setLoading(true)
     attendancesService
 
-      .create({ studentCode: code, subjectId, date: new Date(), code, password })
+      .create({ studentCode: code, subjectId, code, password })
 
       .then(() => {
         setAlertNotifyConfigs({
