@@ -12,4 +12,8 @@ export interface INewAttendanceDTO {
 export interface IAttendancesRepository {
   listByStudent: (studentId: string) => Promise<Attendance[]>
   create: (data: INewAttendanceDTO) => Promise<Attendance>
+  findByStudentAndDate: (
+    studentId: string,
+    date: Date,
+  ) => Promise<Attendance | null>
 }

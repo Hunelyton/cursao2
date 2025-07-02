@@ -1,5 +1,7 @@
 import style from './Login.module.scss'
 import Link from 'next/link'
+import Image from 'next/image'
+import logoImage from '../../../public/assets/logo.png'
 import { FormEvent, useContext, useState } from 'react'
 import { usersService } from '../../services/usersService'
 import { useRouter } from 'next/router'
@@ -77,6 +79,9 @@ export function Login() {
 
   return (
     <div className={style.loginContainer}>
+      <div className={style.logoContainer}>
+        <Image src={logoImage} alt="Logo" className={style.logo} />
+      </div>
       <h2>Entrar com uma conta existente</h2>
 
       <form onSubmit={onLogin} className={style.formContainer}>

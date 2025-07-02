@@ -5,6 +5,8 @@ import { useColumns } from './hooks/useColumns'
 import { EmptyItems } from '../../../../src/components/EmptyItems'
 import { useRouter } from 'next/router'
 import { ModalAttendance } from './ModalAttendance'
+import { ModalAttendancesList } from './ModalAttendancesList'
+import style from './StudentsAbsences.module.scss'
 import { Loading } from '../../../components/Loading'
 
 export interface Student {
@@ -18,6 +20,7 @@ export function StudentsAbsences() {
     undefined,
   )
   const [modalAttendanceOpened, setModalAttendanceOpened] = useState<boolean>(false)
+  const [modalListOpened, setModalListOpened] = useState<boolean>(false)
   const [loadingStudents, setLoadingStudents] = useState<boolean>(true)
   const router = useRouter()
 
@@ -40,22 +43,39 @@ export function StudentsAbsences() {
     getStudents()
   }, [router.query])
 
-  function handleOpenAttendance(student: Student) {
-    setModalAttendanceOpened(true)
+  function handleRowClick(student: Student) {
     setSelectedStudent(student)
   }
 
-  const columns = useColumns({
-    handleOpenAttendance,
-  })
+  const columns = useColumns()
 
   return (
     <>
+      {selectedStudent && (
+        <div className={style.actionsTop}>
+          <button
+            type="button"
+            className={style.buttonAttendance}
+            onClick={() => setModalAttendanceOpened(true)}
+          >
+            Marcar presença
+          </button>
+          <button
+            type="button"
+            className={style.buttonView}
+            onClick={() => setModalListOpened(true)}
+          >
+            Ver presenças
+          </button>
+        </div>
+      )}
+
       {students?.length > 0 && (
         <TableComponent
           loading={loadingStudents}
           columns={columns}
           rows={students}
+          onRowClick={handleRowClick}
         />
       )}
 
@@ -75,6 +95,14 @@ export function StudentsAbsences() {
             setModalAttendanceOpened(false)
             setSelectedStudent(undefined)
           }}
+        />
+      )}
+
+      {modalListOpened && selectedStudent && (
+        <ModalAttendancesList
+          studentId={selectedStudent._id}
+          open={modalListOpened}
+          handleClose={() => setModalListOpened(false)}
         />
       )}
     </>

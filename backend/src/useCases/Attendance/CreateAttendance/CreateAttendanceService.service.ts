@@ -18,7 +18,26 @@ export class CreateAttendanceService {
   }
 
 
-  async execute({ studentId, date }: INewAttendanceDTO): Promise<void> {
+  async execute({
+    studentId,
+    date = new Date(),
+    code,
+    password,
+  }: INewAttendanceDTO): Promise<void> {
+    const student = await this.usersRepository.findByIdWithPassword(studentId)
+    if (!student) throw new AppError('Aluno não encontrado')
+
+    if (student.code !== code)
+      throw new AppError('Código ou senha incorreto')
+
+    const passwordMatch = await bcrypt.compare(password || '', student.password)
+    if (!passwordMatch) throw new AppError('Código ou senha incorreto')
+
+    const attendanceExists =
+      await this.attendancesRepository.findByStudentAndDate(studentId, date)
+
+    if (attendanceExists)
+      throw new AppError('Presença deste dia já registrada')
 
     await this.attendancesRepository.create({ studentId, date })
   }
