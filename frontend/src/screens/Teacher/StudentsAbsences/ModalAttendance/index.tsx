@@ -19,6 +19,7 @@ export function ModalAttendance({ open, handleClose }: Props) {
   const [loading, setLoading] = useState(false)
   const [subjectId, setSubjectId] = useState('')
   const [subjects, setSubjects] = useState<any[]>([])
+  const [date, setDate] = useState('')
 
   useEffect(() => {
     if (open) {
@@ -34,7 +35,9 @@ export function ModalAttendance({ open, handleClose }: Props) {
     setLoading(true)
     attendancesService
 
-      .create({ studentCode: code, subjectId, code, password })
+
+      .create({ studentCode: code, subjectId, date, code, password })
+
 
       .then(() => {
         setAlertNotifyConfigs({
@@ -84,6 +87,14 @@ export function ModalAttendance({ open, handleClose }: Props) {
           ))}
         </Select>
       </FormControl>
+      <CustomTextField
+        type="datetime-local"
+        label="Data"
+        InputLabelProps={{ shrink: true }}
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        required
+      />
       <CustomTextField label="Código" value={code} onChange={(e) => setCode(e.target.value)} />
       <CustomTextField label="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
     </ModalLayout>
