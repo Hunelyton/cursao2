@@ -6,6 +6,7 @@ export interface INewAttendanceDTO {
   date?: Date
   code?: string
   password?: string
+
 }
 
 export interface IAttendancesRepository {

@@ -19,6 +19,14 @@ export function useColumns({ handleOpenAttendance }: UseColumnsParams) {
       valueFormatter: (params: CellFunctionParams<any>) => params.value || '--',
     },
     {
+
+
+      headerName: 'Quantidade de avisos',
+      field: 'warningsAmount',
+      valueFormatter: (params: CellFunctionParams<any>) => params?.value || 0,
+    },
+    {
+
       headerName: '',
       field: 'acoes',
       cellRenderer: (params: CellFunctionParams<any>) => {

@@ -20,4 +20,5 @@ export interface IUsersRepository {
   incrementWarningsAmount(idUser: string): Promise<void>
   findByCode(code: string): Promise<User | null>
   findByIdWithPassword(_id: string): Promise<User>
+
 }

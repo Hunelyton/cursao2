@@ -17,15 +17,8 @@ export class CreateAttendanceService {
     this.usersRepository = usersRepository
   }
 
-  async execute({ studentId, code, password, date }: INewAttendanceDTO): Promise<void> {
-    const student = await this.usersRepository.findByIdWithPassword(studentId)
 
-    if (!student) throw new AppError('Aluno não encontrado')
-
-    if (student.code !== code) throw new AppError('Código inválido')
-
-    const passwordMatch = await bcrypt.compare(password, student.password)
-    if (!passwordMatch) throw new AppError('Senha incorreta')
+  async execute({ studentId, date }: INewAttendanceDTO): Promise<void> {
 
     await this.attendancesRepository.create({ studentId, date })
   }
