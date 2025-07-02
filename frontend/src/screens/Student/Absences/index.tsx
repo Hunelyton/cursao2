@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { attendancesService } from '../../../services/attendancesService'
 import { usersService } from '../../../services/usersService'
-import { TableComponent } from '../../components/TableComponent'
+import { TableComponent } from '../../../components/TableComponent'
 
 export interface Attendance {
   _id: string
@@ -26,5 +26,5 @@ export function StudentAbsences() {
     { headerName: 'Matéria', field: 'subject' },
   ]
 
-  return <TableComponent rows={attendances} columns={columns} />
+  return <TableComponent rows={attendances} columns={columns} loading={false} />
 }
