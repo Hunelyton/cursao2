@@ -8,4 +8,6 @@ export interface INewClassLessonDTO {
 export interface IClassLessonsRepository {
   create(data: INewClassLessonDTO): Promise<ClassLesson>
   findBySubjectAndDate(subjectId: string, date: Date): Promise<ClassLesson | null>
+  listAll(): Promise<ClassLesson[]>
+  update(id: string, data: Partial<INewClassLessonDTO & { description?: string }>): Promise<void>
 }

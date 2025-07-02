@@ -1,6 +1,14 @@
 import { CellFunctionParams } from '../../../../components/TableComponent/interfaces'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye } from '@fortawesome/free-solid-svg-icons'
+import style from '../StudentsAbsences.module.scss'
 
-export function useColumns() {
+interface Params {
+  attendancePercentages: { [key: string]: number }
+  onViewAttendances: (student: any) => void
+}
+
+export function useColumns({ attendancePercentages, onViewAttendances }: Params) {
   return [
     {
       headerName: 'Código',
@@ -13,11 +21,24 @@ export function useColumns() {
       valueFormatter: (params: CellFunctionParams<any>) => params.value || '--',
     },
     {
-
-
-      headerName: 'Quantidade de avisos',
-      field: 'warningsAmount',
-      valueFormatter: (params: CellFunctionParams<any>) => params?.value || 0,
+      headerName: 'Presenças',
+      field: 'percentage',
+      valueFormatter: (params: CellFunctionParams<any>) =>
+        `${attendancePercentages[params.data._id] || 0}%`,
+    },
+    {
+      headerName: '',
+      field: 'acoes',
+      type: 'actions',
+      cellRenderer: (params: CellFunctionParams<any>) => (
+        <button
+          type="button"
+          className={style.buttonView}
+          onClick={() => onViewAttendances(params.data)}
+        >
+          <FontAwesomeIcon icon={faEye} />
+        </button>
+      ),
     },
   ]
 }
