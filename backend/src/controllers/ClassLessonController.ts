@@ -7,10 +7,10 @@ import { DeleteClassLessonService } from '../useCases/ClassLesson/DeleteClassLes
 
 export class ClassLessonController {
   async create(req: Request, res: Response): Promise<Response> {
-    const { subjectId, description } = req.body
+    const { subjectId, description, date } = req.body
     const { _id: teacherId } = req.user
     const service = container.resolve(CreateClassLessonService)
-    await service.execute({ subjectId, teacherId, description })
+    await service.execute({ subjectId, teacherId, description, date })
     return res.status(201).json({ success: true })
   }
 
