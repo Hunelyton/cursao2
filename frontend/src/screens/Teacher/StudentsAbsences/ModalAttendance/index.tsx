@@ -21,7 +21,9 @@ export function ModalAttendance({ open, handleClose, studentId }: Props) {
     event.preventDefault()
     setLoading(true)
     attendancesService
+
       .create({ studentId, date: new Date() })
+
       .then(() => {
         setAlertNotifyConfigs({
           ...alertNotifyConfigs,
@@ -30,12 +32,15 @@ export function ModalAttendance({ open, handleClose, studentId }: Props) {
           text: 'Presença registrada',
         })
         handleClose()
+
       })
       .catch(() => {
+
         setAlertNotifyConfigs({
           ...alertNotifyConfigs,
           open: true,
           type: 'error',
+
           text: 'Erro ao registrar presença',
         })
       })

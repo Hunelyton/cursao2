@@ -17,7 +17,9 @@ export class CreateAttendanceService {
     this.usersRepository = usersRepository
   }
 
+
   async execute({ studentId, date }: INewAttendanceDTO): Promise<void> {
+
     await this.attendancesRepository.create({ studentId, date })
   }
 }

@@ -20,6 +20,7 @@ export function useColumns({ handleOpenAttendance }: UseColumnsParams) {
     },
     {
 
+
       headerName: 'Quantidade de avisos',
       field: 'warningsAmount',
       valueFormatter: (params: CellFunctionParams<any>) => params?.value || 0,

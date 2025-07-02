@@ -4,6 +4,9 @@ import { Attendance } from '../../entities/attendance'
 export interface INewAttendanceDTO {
   studentId: string
   date?: Date
+  code?: string
+  password?: string
+
 }
 
 export interface IAttendancesRepository {
