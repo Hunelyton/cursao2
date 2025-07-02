@@ -21,4 +21,18 @@ http.interceptors.request.use(
   },
 )
 
+http.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const status = error?.response?.status
+    if (status === 401 || status === 403) {
+      tokenService.deleteToken()
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login'
+      }
+    }
+    return Promise.reject(error)
+  },
+)
+
 export default http
