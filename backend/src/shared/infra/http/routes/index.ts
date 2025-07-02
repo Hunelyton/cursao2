@@ -6,6 +6,7 @@ import { authenticateRoutes } from './authenticate'
 import { studentsRoutes } from './students'
 import { gradesRoutes } from './grades'
 import { attendancesRoutes } from './attendances'
+import { classLessonRoutes } from './classLessons'
 
 const routes = Router()
 
@@ -16,5 +17,6 @@ routes.use('/students', studentsRoutes)
 routes.use('/grades', gradesRoutes)
 routes.use(authenticateRoutes)
 routes.use('/attendances', attendancesRoutes)
+routes.use('/classLessons', classLessonRoutes)
 
 export { routes }

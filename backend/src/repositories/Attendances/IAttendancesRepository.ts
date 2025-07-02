@@ -2,7 +2,8 @@ import { Types } from 'mongoose'
 import { Attendance } from '../../entities/attendance'
 
 export interface INewAttendanceDTO {
-  studentId: string
+  studentId?: string
+  studentCode?: string
   date?: Date
   subjectId: string
   code?: string
