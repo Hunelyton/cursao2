@@ -4,13 +4,12 @@ import { TableComponent } from '../../../../src/components/TableComponent'
 import { useColumns } from './hooks/useColumns'
 import { EmptyItems } from '../../../../src/components/EmptyItems'
 import { useRouter } from 'next/router'
-import { ModalWarnings, Warning } from './ModalWarnings'
+import { ModalAttendance } from './ModalAttendance'
 import { Loading } from '../../../components/Loading'
 
 export interface Student {
   _id: string
   name: string
-  warnings: Warning[]
 }
 
 export function StudentsAbsences() {
@@ -18,7 +17,7 @@ export function StudentsAbsences() {
   const [selectedStudent, setSelectedStudent] = useState<Student | undefined>(
     undefined,
   )
-  const [modalWarningsOpened, setModalWarningsOpened] = useState<boolean>(true)
+  const [modalAttendanceOpened, setModalAttendanceOpened] = useState<boolean>(false)
   const [loadingStudents, setLoadingStudents] = useState<boolean>(true)
   const router = useRouter()
 
@@ -41,14 +40,13 @@ export function StudentsAbsences() {
     getStudents()
   }, [router.query])
 
-  function handleOpenWarnings(student: Student) {
-    setModalWarningsOpened(true)
-    console.log('student', student)
+  function handleOpenAttendance(student: Student) {
+    setModalAttendanceOpened(true)
     setSelectedStudent(student)
   }
 
   const columns = useColumns({
-    handleOpenWarnings,
+    handleOpenAttendance,
   })
 
   return (
@@ -69,13 +67,12 @@ export function StudentsAbsences() {
         <EmptyItems text="Nenhum aluno foi encontrado" />
       )}
 
-      {modalWarningsOpened && selectedStudent && (
-        <ModalWarnings
-          studentData={selectedStudent}
-          setStudentData={setSelectedStudent}
-          open={modalWarningsOpened}
+      {modalAttendanceOpened && selectedStudent && (
+        <ModalAttendance
+          studentId={selectedStudent._id}
+          open={modalAttendanceOpened}
           handleClose={() => {
-            setModalWarningsOpened(false)
+            setModalAttendanceOpened(false)
             setSelectedStudent(undefined)
           }}
         />

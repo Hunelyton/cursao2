@@ -20,8 +20,8 @@ export function StudentHomeScreen() {
     },
     {
       image: warningImage,
-      alt: 'Botão de dvertências',
-      title: 'Advertências',
+      alt: 'Botão de avisos',
+      title: 'Avisos',
       onClickCallback: () => {
         router.push('/student/warnings')
       },
@@ -30,8 +30,9 @@ export function StudentHomeScreen() {
       image: timetableImage,
       alt: 'Botão de faltas',
       title: 'Faltas',
-      onClickCallback: () => {},
-      disabled: true,
+      onClickCallback: () => {
+        router.push('/student/absences')
+      },
     },
   ]
 

@@ -29,8 +29,8 @@ export function TeacherHomeScreen() {
     },
     {
       image: warningImage,
-      alt: 'Botão de dvertências',
-      title: 'Advertências',
+      alt: 'Botão de avisos',
+      title: 'Avisos',
 
       onClickCallback: () => {
         router.push('/teacher/studentsWarnings')
@@ -40,8 +40,9 @@ export function TeacherHomeScreen() {
       image: timetableImage,
       alt: 'Botão de faltas',
       title: 'Faltas',
-      disabled: true,
-      onClickCallback: () => {},
+      onClickCallback: () => {
+        router.push('/teacher/studentsAbsences')
+      },
     },
   ]
 

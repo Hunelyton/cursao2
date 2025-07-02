@@ -65,4 +65,8 @@ export const usersService = {
 
     return http.patch('/users/avatar', formData)
   },
+
+  resetPassword({ email, newPassword }: { email: string; newPassword: string }) {
+    return http.put('/users/password', { email, newPassword })
+  },
 }

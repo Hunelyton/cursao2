@@ -116,6 +116,9 @@ export function Login() {
       <Link href="/createAccount" className={style.createAccountLink}>
         Criar nova conta
       </Link>
+      <Link href="/resetPassword" className={style.createAccountLink}>
+        Fazer nova senha
+      </Link>
     </div>
   )
 }

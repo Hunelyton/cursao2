@@ -21,5 +21,6 @@ usersRoutes.patch(
 )
 
 usersRoutes.put('/', ensureAuthenticated, userController.updateUserInfos)
+usersRoutes.put('/password', userController.resetPassword)
 
 export { usersRoutes }
