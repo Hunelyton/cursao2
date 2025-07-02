@@ -8,6 +8,7 @@ const warningController = new WarningController()
 warningsRoutes.use(ensureAuthenticated)
 
 warningsRoutes.post('/:idStudent', warningController.createNewWarning)
+warningsRoutes.post('/subject/:idSubject', warningController.createWarningsBySubject)
 
 warningsRoutes.get('/:idStudent', warningController.listWarnings)
 

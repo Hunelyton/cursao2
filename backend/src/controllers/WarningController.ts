@@ -2,6 +2,7 @@ import { ListWarningsService } from '../useCases/Warning/ListWarnings/ListWarnin
 import { Request, Response } from 'express'
 import { container } from 'tsyringe'
 import { CreateNewWarningService } from '../useCases/Warning/CreateNewWarning/CreateNewWarningService.service'
+import { CreateWarningsBySubjectService } from '../useCases/Warning/CreateWarningsBySubject/CreateWarningsBySubjectService.service'
 
 export class WarningController {
   async createNewWarning(req: Request, res: Response): Promise<Response> {
@@ -18,6 +19,23 @@ export class WarningController {
     return res.status(201).json({
       item: warning,
       message: 'Advertência cadastrada com sucesso.',
+    })
+  }
+
+  async createWarningsBySubject(req: Request, res: Response): Promise<Response> {
+    const { idSubject } = req.params
+    const { title, description } = req.body
+
+    const createWarningsBySubjectService = container.resolve(CreateWarningsBySubjectService)
+    const warnings = await createWarningsBySubjectService.execute({
+      idSubject,
+      title,
+      description,
+    })
+
+    return res.status(201).json({
+      items: warnings,
+      message: 'Avisos cadastrados com sucesso.',
     })
   }
 

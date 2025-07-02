@@ -17,6 +17,11 @@ export const warningsService = {
     })
   },
 
+  createBySubject(idSubject: string, newWarningData: NewWarning) {
+    const body = { ...newWarningData }
+    return http.post(`/warnings/subject/${idSubject}`, { ...body })
+  },
+
   getAll(idStudent: string) {
     return http.get('/warnings/' + idStudent)
   },
