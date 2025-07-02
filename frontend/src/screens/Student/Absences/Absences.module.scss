@@ -1,0 +1,11 @@
+@import "../../../../styles/colors.scss";
+
+.present {
+  color: $green-color-700;
+  font-weight: bold;
+}
+
+.absent {
+  color: $red-color-500;
+  font-weight: bold;
+}

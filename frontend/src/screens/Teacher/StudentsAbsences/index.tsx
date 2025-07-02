@@ -7,12 +7,16 @@ import { useRouter } from 'next/router'
 import { ModalAttendance } from './ModalAttendance'
 import { ModalAttendancesList } from './ModalAttendancesList'
 import { ModalCreateClassLesson } from './ModalCreateClassLesson'
+import { ModalClassLessonsList } from './ModalClassLessonsList'
+import { classLessonsService } from '../../../services/classLessonsService'
+import { attendancesService } from '../../../services/attendancesService'
 import style from './StudentsAbsences.module.scss'
 import { Loading } from '../../../components/Loading'
 
 export interface Student {
   _id: string
   name: string
+  code?: string
 }
 
 export function StudentsAbsences() {
@@ -23,7 +27,10 @@ export function StudentsAbsences() {
   const [modalAttendanceOpened, setModalAttendanceOpened] = useState<boolean>(false)
   const [modalClassLessonOpened, setModalClassLessonOpened] = useState<boolean>(false)
   const [modalListOpened, setModalListOpened] = useState<boolean>(false)
+  const [modalLessonsOpened, setModalLessonsOpened] = useState<boolean>(false)
   const [loadingStudents, setLoadingStudents] = useState<boolean>(true)
+  const [attendancePercentages, setAttendancePercentages] = useState<{ [key: string]: number }>({})
+  const [totalLessons, setTotalLessons] = useState<number>(0)
   const router = useRouter()
 
   function getStudents() {
@@ -43,20 +50,50 @@ export function StudentsAbsences() {
 
   useEffect(() => {
     getStudents()
+    classLessonsService.getAll().then((res) => {
+      setTotalLessons(res.data.items.length)
+    })
   }, [router.query])
+
+  useEffect(() => {
+    if (totalLessons > 0 && students.length > 0) {
+      Promise.all(
+        students.map((s) =>
+          attendancesService
+            .listByStudent(s._id)
+            .then((res) => ({ id: s._id, count: res.data.items.length }))
+            .catch(() => ({ id: s._id, count: 0 })),
+        ),
+      ).then((items) => {
+        const obj: { [key: string]: number } = {}
+        items.forEach((it) => {
+          obj[it.id] = Math.round((it.count / totalLessons) * 100)
+        })
+        setAttendancePercentages(obj)
+      })
+    }
+  }, [students, totalLessons])
 
   function handleRowClick(student: Student) {
     setSelectedStudent(student)
   }
 
-  const columns = useColumns()
+  function handleViewAttendances(student: Student) {
+    setSelectedStudent(student)
+    setModalListOpened(true)
+  }
+
+  const columns = useColumns({
+    attendancePercentages,
+    onViewAttendances: handleViewAttendances,
+  })
 
   return (
     <>
       <div className={style.actionsTop}>
         <button
           type="button"
-          className={style.buttonAttendance}
+          className={`${style.buttonAttendance} ${style.buttonMarkAttendance}`}
           onClick={() => setModalAttendanceOpened(true)}
         >
           Marcar presença
@@ -67,6 +104,13 @@ export function StudentsAbsences() {
           onClick={() => setModalClassLessonOpened(true)}
         >
           Nova aula
+        </button>
+        <button
+          type="button"
+          className={style.buttonAttendance}
+          onClick={() => setModalLessonsOpened(true)}
+        >
+          Ver aulas
         </button>
         <button
           type="button"
@@ -106,6 +150,13 @@ export function StudentsAbsences() {
         <ModalCreateClassLesson
           open={modalClassLessonOpened}
           handleClose={() => setModalClassLessonOpened(false)}
+        />
+      )}
+
+      {modalLessonsOpened && (
+        <ModalClassLessonsList
+          open={modalLessonsOpened}
+          handleClose={() => setModalLessonsOpened(false)}
         />
       )}
 

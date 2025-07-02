@@ -5,6 +5,9 @@ import { ensureAuthenticated } from '../middlewares/ensureAuthenticated'
 const classLessonRoutes = express.Router()
 const classLessonController = new ClassLessonController()
 
-classLessonRoutes.post('/', ensureAuthenticated, classLessonController.create)
+classLessonRoutes.use(ensureAuthenticated)
+classLessonRoutes.post('/', classLessonController.create)
+classLessonRoutes.get('/', classLessonController.list)
+classLessonRoutes.put('/:id', classLessonController.update)
 
 export { classLessonRoutes }

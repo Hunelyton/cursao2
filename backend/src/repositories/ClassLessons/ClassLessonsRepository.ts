@@ -17,6 +17,17 @@ export class ClassLessonsRepository implements IClassLessonsRepository {
     return newLesson
   }
 
+  async listAll(): Promise<ClassLesson[]> {
+    return await this.model.find().populate('subject').sort({ date: 1 })
+  }
+
+  async update(
+    id: string,
+    data: Partial<INewClassLessonDTO & { description?: string }>,
+  ): Promise<void> {
+    await this.model.updateOne({ _id: id }, { $set: data })
+  }
+
   async findBySubjectAndDate(subjectId: string, date: Date): Promise<ClassLesson | null> {
     const start = new Date(date)
     start.setHours(0,0,0,0)
