@@ -23,7 +23,7 @@ export function useColumns({ handleOpenWarnings }: UseColumnsParams) {
         params?.value || '--',
     },
     {
-      headerName: 'Advertências',
+      headerName: 'Avisos',
       field: 'warningsAmount',
       valueFormatter: (params: CellFunctionParams<Student>) =>
         params?.value || 0,

@@ -64,7 +64,7 @@ export function ModalWarnings({
           ...alertNotifyConfigs,
           open: true,
           type: 'success',
-          text: 'Advertências cadastrada com sucesso',
+          text: 'Aviso cadastrado com sucesso',
         })
         getWarnings()
         getStudents()
@@ -77,7 +77,7 @@ export function ModalWarnings({
           open: true,
           type: 'success',
           text:
-            'Advertências cadastrada com sucesso, ' + err.response.data.message,
+            'Aviso cadastrado com sucesso, ' + err.response.data.message,
         })
       })
       .finally(() => {
@@ -93,7 +93,7 @@ export function ModalWarnings({
         setWarnings(res.data.items)
       })
       .catch((err) => {
-        console.log('ERRO AO BUSCAR ADVERTÊNCIAS')
+        console.log('ERRO AO BUSCAR AVISOS')
         console.log(err?.response?.data?.message)
       })
       .finally(() => {
@@ -113,7 +113,7 @@ export function ModalWarnings({
       open={open}
       handleClose={handleClose}
       onSubmit={isFormMode ? onCreateNewWarning : undefined}
-      title="Advertências"
+      title="Avisos"
       submitButtonText={isFormMode ? 'Confirmar' : ''}
       loading={loadingCreateWarning}
     >
@@ -126,7 +126,7 @@ export function ModalWarnings({
           }}
         >
           <FontAwesomeIcon className={style.icon} icon={faPlus} />
-          Nova advertência
+          Novo aviso
         </button>
       )}
 
@@ -143,7 +143,7 @@ export function ModalWarnings({
       {!isFormMode && (
         <ListMobile
           items={warnings}
-          emptyText="Nenhuma advertência encontrada"
+          emptyText="Nenhum aviso encontrado"
           itemFields={fieldsMobile}
           collapseItems={collapseItems}
           loading={loadingWarnings}

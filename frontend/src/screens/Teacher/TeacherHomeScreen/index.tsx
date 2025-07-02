@@ -29,8 +29,8 @@ export function TeacherHomeScreen() {
     },
     {
       image: warningImage,
-      alt: 'Botão de dvertências',
-      title: 'Advertências',
+      alt: 'Botão de avisos',
+      title: 'Avisos',
 
       onClickCallback: () => {
         router.push('/teacher/studentsWarnings')
