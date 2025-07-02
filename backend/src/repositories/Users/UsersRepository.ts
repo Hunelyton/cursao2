@@ -55,4 +55,8 @@ export class UsersRepository implements IUsersRepository {
   async incrementWarningsAmount(idUser: string): Promise<void> {
     await this.model.updateOne({ _id: idUser }, { $inc: { warningsAmount: 1 } })
   }
+
+  async findByCode(code: string): Promise<User | null> {
+    return await this.model.findOne({ code })
+  }
 }

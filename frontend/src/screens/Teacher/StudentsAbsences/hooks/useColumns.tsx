@@ -1,11 +1,12 @@
 import { Student } from '..'
 import { CellFunctionParams } from '../../../../components/TableComponent/interfaces'
+import style from '../StudentsAbsences.module.scss'
 
 interface UseColumnsParams {
-  handleOpenWarnings: (student: Student) => void
+  handleOpenAttendance: (student: Student) => void
 }
 
-export function useColumns({ handleOpenWarnings }: UseColumnsParams) {
+export function useColumns({ handleOpenAttendance }: UseColumnsParams) {
   return [
     {
       headerName: 'Código',
@@ -18,17 +19,25 @@ export function useColumns({ handleOpenWarnings }: UseColumnsParams) {
       valueFormatter: (params: CellFunctionParams<any>) => params.value || '--',
     },
     {
+
       headerName: 'Quantidade de avisos',
       field: 'warningsAmount',
       valueFormatter: (params: CellFunctionParams<any>) => params?.value || 0,
     },
     {
+
       headerName: '',
       field: 'acoes',
       cellRenderer: (params: CellFunctionParams<any>) => {
         return (
           <>
-            <span>any</span>
+            <button
+              type="button"
+              onClick={() => handleOpenAttendance(params.data)}
+              className={style.actionButton}
+            >
+              Marcar presença
+            </button>
           </>
         )
       },

@@ -4,6 +4,7 @@ import { CreateNewUserService } from '../useCases/User/CreateNewUser/CreateNewUs
 import { GetUserInfoService } from '../useCases/User/GetUserInfo/GetUserInfoService.service'
 import { UpdateUserAvatarService } from '../useCases/User/UpdateUserAvatar/UpdateUserAvatarService.service'
 import { UpdateUserInfosService } from '../useCases/User/UpdateUserInfos/UpdateUserInfosService.service'
+import { ResetPasswordService } from '../useCases/User/ResetPassword/ResetPasswordService.service'
 
 export class UserController {
   async createNewUser(req: Request, res: Response): Promise<Response> {
@@ -68,5 +69,15 @@ export class UserController {
       success: true,
       message: 'Dados do usuário atualizados com sucesso',
     })
+  }
+
+  async resetPassword(req: Request, res: Response): Promise<Response> {
+    const { email, newPassword } = req.body
+
+    const resetPasswordService = container.resolve(ResetPasswordService)
+
+    await resetPasswordService.execute({ email, newPassword })
+
+    return res.status(200).json({ success: true, message: 'Senha atualizada com sucesso' })
   }
 }

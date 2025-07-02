@@ -30,8 +30,9 @@ export function StudentHomeScreen() {
       image: timetableImage,
       alt: 'Botão de faltas',
       title: 'Faltas',
-      onClickCallback: () => {},
-      disabled: true,
+      onClickCallback: () => {
+        router.push('/student/absences')
+      },
     },
   ]
 

@@ -40,8 +40,9 @@ export function TeacherHomeScreen() {
       image: timetableImage,
       alt: 'Botão de faltas',
       title: 'Faltas',
-      disabled: true,
-      onClickCallback: () => {},
+      onClickCallback: () => {
+        router.push('/teacher/studentsAbsences')
+      },
     },
   ]
 
