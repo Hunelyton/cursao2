@@ -10,12 +10,16 @@ export class AttendancesRepository implements IAttendancesRepository {
   }
 
   async listByStudent(studentId: string): Promise<Attendance[]> {
-    return await this.model.find({ student: studentId }).sort({ date: 1 })
+    return await this.model
+      .find({ student: studentId })
+      .populate('subject')
+      .sort({ date: 1 })
   }
 
-  async create({ studentId, date }: INewAttendanceDTO): Promise<Attendance> {
+  async create({ studentId, date, subjectId }: INewAttendanceDTO): Promise<Attendance> {
     const newAttendance = await this.model.create({
       student: studentId,
+      subject: subjectId,
       date,
     })
     await newAttendance.save()

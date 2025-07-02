@@ -51,24 +51,24 @@ export function StudentsAbsences() {
 
   return (
     <>
-      {selectedStudent && (
-        <div className={style.actionsTop}>
-          <button
-            type="button"
-            className={style.buttonAttendance}
-            onClick={() => setModalAttendanceOpened(true)}
-          >
-            Marcar presença
-          </button>
-          <button
-            type="button"
-            className={style.buttonView}
-            onClick={() => setModalListOpened(true)}
-          >
-            Ver presenças
-          </button>
-        </div>
-      )}
+      <div className={style.actionsTop}>
+        <button
+          type="button"
+          className={style.buttonAttendance}
+          onClick={() => selectedStudent && setModalAttendanceOpened(true)}
+          disabled={!selectedStudent}
+        >
+          Marcar presença
+        </button>
+        <button
+          type="button"
+          className={style.buttonView}
+          onClick={() => selectedStudent && setModalListOpened(true)}
+          disabled={!selectedStudent}
+        >
+          Ver presenças
+        </button>
+      </div>
 
       {students?.length > 0 && (
         <TableComponent

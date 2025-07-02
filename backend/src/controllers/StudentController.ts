@@ -20,7 +20,7 @@ export class StudentController {
 
   async createNewStudent(req: Request, res: Response): Promise<Response> {
     const { _id: idTeacher } = req.user
-    const { name, email, password } = req.body
+    const { name, email, password, isActive, monthlyPayments } = req.body
 
     const createStudentService = container.resolve(CreateStudentService)
 
@@ -29,6 +29,8 @@ export class StudentController {
       email,
       password,
       idTeacher,
+      isActive,
+      monthlyPayments,
     })
 
     return res.status(201).json({

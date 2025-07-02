@@ -9,6 +9,8 @@ export interface NewStudentData {
   name: string
   email: string
   password?: string
+  isActive?: boolean
+  monthlyPayments?: { [key: string]: boolean }
 }
 
 interface Props {
@@ -29,6 +31,21 @@ export function ModalCreateNewStudent({
     name: '',
     email: '',
     password: '',
+    isActive: true,
+    monthlyPayments: {
+      july: false,
+      august: false,
+      september: false,
+      october: false,
+      november: false,
+      december: false,
+      january: false,
+      february: false,
+      march: false,
+      april: false,
+      may: false,
+      june: false,
+    },
   }
   const [newStudentData, setNewStudentData] = useState<NewStudentData>(
     studentDataToEdit || defaultNewStudentValues,
@@ -152,6 +169,41 @@ export function ModalCreateNewStudent({
             }}
           />
         )}
+
+        <div className={style.monthsContainer}>
+          {Object.keys(newStudentData.monthlyPayments || {}).map((month) => (
+            <label key={month} className={style.monthItem}>
+              <input
+                type="checkbox"
+                checked={newStudentData.monthlyPayments?.[month]}
+                onChange={(e) => {
+                  setNewStudentData({
+                    ...newStudentData,
+                    monthlyPayments: {
+                      ...newStudentData.monthlyPayments,
+                      [month]: e.target.checked,
+                    },
+                  })
+                }}
+              />
+              {month}
+            </label>
+          ))}
+        </div>
+
+        <label className={style.statusLabel}>
+          <input
+            type="checkbox"
+            checked={newStudentData.isActive}
+            onChange={(e) =>
+              setNewStudentData({
+                ...newStudentData,
+                isActive: e.target.checked,
+              })
+            }
+          />
+          Ativo
+        </label>
       </div>
     </ModalLayout>
   )

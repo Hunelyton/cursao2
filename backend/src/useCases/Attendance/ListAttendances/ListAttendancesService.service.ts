@@ -9,6 +9,11 @@ export class ListAttendancesService {
   }
 
   async execute(studentId: string) {
-    return await this.attendancesRepository.listByStudent(studentId)
+    const attendances = await this.attendancesRepository.listByStudent(studentId)
+    return attendances.map((att) => ({
+      _id: att._id,
+      date: att.date,
+      subject: (att.subject as any)?.name || '',
+    }))
   }
 }
