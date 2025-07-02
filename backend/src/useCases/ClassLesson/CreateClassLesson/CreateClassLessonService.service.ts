@@ -32,6 +32,12 @@ export class CreateClassLessonService {
     if (!subject || subject.teacher.toString() !== teacherId)
       throw new AppError('Disciplina inválida')
 
-    await this.classLessonsRepository.create({ subjectId, date, description })
+    const normalizedDate = date ? new Date(date) : undefined
+
+    await this.classLessonsRepository.create({
+      subjectId,
+      date: normalizedDate,
+      description,
+    })
   }
 }
