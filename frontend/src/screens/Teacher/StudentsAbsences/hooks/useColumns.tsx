@@ -36,7 +36,7 @@ export function useColumns({ attendancePercentages, onViewAttendances }: Params)
           className={style.buttonView}
           onClick={() => onViewAttendances(params.data)}
         >
-          <FontAwesomeIcon icon={faEye} />
+          <FontAwesomeIcon icon={faEye} /> Ver presenças
         </button>
       ),
     },

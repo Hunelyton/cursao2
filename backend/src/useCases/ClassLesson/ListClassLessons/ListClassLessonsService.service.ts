@@ -14,6 +14,7 @@ export class ListClassLessonsService {
       date: lesson.date,
       description: lesson.description,
       subject: (lesson.subject as any)?.name || '',
+      subjectId: (lesson.subject as any)?._id?.toString() || '',
     }))
   }
 }

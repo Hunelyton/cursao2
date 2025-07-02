@@ -10,6 +10,7 @@ import { ModalCreateClassLesson } from './ModalCreateClassLesson'
 import { ModalClassLessonsList } from './ModalClassLessonsList'
 import { classLessonsService } from '../../../services/classLessonsService'
 import { attendancesService } from '../../../services/attendancesService'
+import { subjectsService } from '../../../services/subjectsService'
 import style from './StudentsAbsences.module.scss'
 import { Loading } from '../../../components/Loading'
 
@@ -30,7 +31,8 @@ export function StudentsAbsences() {
   const [modalLessonsOpened, setModalLessonsOpened] = useState<boolean>(false)
   const [loadingStudents, setLoadingStudents] = useState<boolean>(true)
   const [attendancePercentages, setAttendancePercentages] = useState<{ [key: string]: number }>({})
-  const [totalLessons, setTotalLessons] = useState<number>(0)
+  const [lessons, setLessons] = useState<any[]>([])
+  const [subjects, setSubjects] = useState<any[]>([])
   const router = useRouter()
 
   function getStudents() {
@@ -50,29 +52,40 @@ export function StudentsAbsences() {
 
   useEffect(() => {
     getStudents()
-    classLessonsService.getAll().then((res) => {
-      setTotalLessons(res.data.items.length)
-    })
+    classLessonsService.getAll().then((res) => setLessons(res.data.items))
+    subjectsService.getAll().then((res) => setSubjects(res.data.items))
   }, [router.query])
 
   useEffect(() => {
-    if (totalLessons > 0 && students.length > 0) {
+    if (students.length > 0 && lessons.length > 0 && subjects.length > 0) {
       Promise.all(
-        students.map((s) =>
-          attendancesService
+        students.map((s) => {
+          const studentSubjects = subjects
+            .filter((sub: any) => sub.students?.includes(s._id))
+            .map((sub: any) => sub._id)
+          const lessonsForStudent = lessons.filter((l) =>
+            studentSubjects.includes(l.subjectId),
+          )
+          const total = lessonsForStudent.length
+          return attendancesService
             .listByStudent(s._id)
-            .then((res) => ({ id: s._id, count: res.data.items.length }))
-            .catch(() => ({ id: s._id, count: 0 })),
-        ),
+            .then((res) => {
+              const count = (res.data.items || []).filter((a: any) =>
+                studentSubjects.includes(a.subjectId),
+              ).length
+              return { id: s._id, percentage: total ? Math.round((count / total) * 100) : 0 }
+            })
+            .catch(() => ({ id: s._id, percentage: 0 }))
+        }),
       ).then((items) => {
         const obj: { [key: string]: number } = {}
         items.forEach((it) => {
-          obj[it.id] = Math.round((it.count / totalLessons) * 100)
+          obj[it.id] = it.percentage
         })
         setAttendancePercentages(obj)
       })
     }
-  }, [students, totalLessons])
+  }, [students, lessons, subjects])
 
   function handleRowClick(student: Student) {
     setSelectedStudent(student)
@@ -111,14 +124,6 @@ export function StudentsAbsences() {
           onClick={() => setModalLessonsOpened(true)}
         >
           Ver aulas
-        </button>
-        <button
-          type="button"
-          className={style.buttonView}
-          onClick={() => selectedStudent && setModalListOpened(true)}
-          disabled={!selectedStudent}
-        >
-          Ver presenças
         </button>
       </div>
 

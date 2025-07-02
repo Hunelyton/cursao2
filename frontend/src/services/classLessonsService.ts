@@ -1,8 +1,8 @@
 import http from '../api/http'
 
 export const classLessonsService = {
-  create({ subjectId, date, teacherPassword }: any) {
-    const body = { subjectId, date, teacherPassword }
+  create({ subjectId, description }: any) {
+    const body = { subjectId, description }
     return http.post('/classLessons', body)
   },
 
@@ -10,7 +10,11 @@ export const classLessonsService = {
     return http.get('/classLessons')
   },
 
-  update({ id, date, description }: any) {
-    return http.put(`/classLessons/${id}`, { date, description })
+  update({ id, date, description, subjectId }: any) {
+    return http.put(`/classLessons/${id}`, { date, description, subjectId })
+  },
+
+  delete(id: string) {
+    return http.delete(`/classLessons/${id}`)
   },
 }
