@@ -1,30 +1,28 @@
+import { useEffect, useState, FormEvent, useContext } from 'react'
 import { ModalLayout } from '../../../../components/ModalLayout'
-import { FormEvent, useContext, useState, useEffect } from 'react'
-import { attendancesService } from '../../../../services/attendancesService'
-import { AlertContext } from '../../../../contexts/alertContext'
-import { CustomTextField } from '../../../../components/CustomTextField'
-import { Loading } from '../../../../components/Loading'
 import { subjectsService } from '../../../../services/subjectsService'
+import { classLessonsService } from '../../../../services/classLessonsService'
+import { AlertContext } from '../../../../contexts/alertContext'
 import { MenuItem, Select, InputLabel, FormControl } from '@mui/material'
+import { CustomTextField } from '../../../../components/CustomTextField'
 
 interface Props {
   open: boolean
   handleClose: () => void
 }
 
-export function ModalAttendance({ open, handleClose }: Props) {
+export function ModalCreateClassLesson({ open, handleClose }: Props) {
   const { alertNotifyConfigs, setAlertNotifyConfigs } = useContext(AlertContext)
-  const [code, setCode] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
   const [subjectId, setSubjectId] = useState('')
   const [subjects, setSubjects] = useState<any[]>([])
+  const [date, setDate] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (open) {
       subjectsService.getAll().then((res) => {
-        const items = res.data.items || []
-        setSubjects(items)
+        setSubjects(res.data.items || [])
       })
     }
   }, [open])
@@ -32,28 +30,23 @@ export function ModalAttendance({ open, handleClose }: Props) {
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setLoading(true)
-    attendancesService
-
-      .create({ studentCode: code, subjectId, date: new Date(), code, password })
-
+    classLessonsService
+      .create({ subjectId, date: new Date(date), teacherPassword: password })
       .then(() => {
         setAlertNotifyConfigs({
           ...alertNotifyConfigs,
           open: true,
           type: 'success',
-          text: 'Presença registrada',
+          text: 'Aula criada com sucesso',
         })
         handleClose()
-
       })
       .catch(() => {
-
         setAlertNotifyConfigs({
           ...alertNotifyConfigs,
           open: true,
           type: 'error',
-
-          text: 'Erro ao registrar presença',
+          text: 'Erro ao criar aula',
         })
       })
       .finally(() => setLoading(false))
@@ -64,7 +57,7 @@ export function ModalAttendance({ open, handleClose }: Props) {
       open={open}
       handleClose={handleClose}
       onSubmit={onSubmit}
-      title="Marcar presença"
+      title="Nova aula"
       submitButtonText="Confirmar"
       loading={loading}
     >
@@ -84,8 +77,18 @@ export function ModalAttendance({ open, handleClose }: Props) {
           ))}
         </Select>
       </FormControl>
-      <CustomTextField label="Código" value={code} onChange={(e) => setCode(e.target.value)} />
-      <CustomTextField label="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <CustomTextField
+        label="Data"
+        type="datetime-local"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+      />
+      <CustomTextField
+        label="Senha"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
     </ModalLayout>
   )
 }

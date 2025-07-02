@@ -5,6 +5,21 @@ import { CustomTextField } from '../../../../components/CustomTextField'
 import { AlertContext } from '../../../../contexts/alertContext'
 import { studentsService } from '../../../../services/studentsService'
 
+const monthsLabels: { [key: string]: string } = {
+  july: 'Julho',
+  august: 'Agosto',
+  september: 'Setembro',
+  october: 'Outubro',
+  november: 'Novembro',
+  december: 'Dezembro',
+  january: 'Janeiro',
+  february: 'Fevereiro',
+  march: 'Março',
+  april: 'Abril',
+  may: 'Maio',
+  june: 'Junho',
+}
+
 export interface NewStudentData {
   name: string
   email: string
@@ -186,7 +201,7 @@ export function ModalCreateNewStudent({
                   })
                 }}
               />
-              {month}
+              {monthsLabels[month]}
             </label>
           ))}
         </div>

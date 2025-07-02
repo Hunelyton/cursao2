@@ -6,6 +6,7 @@ import { EmptyItems } from '../../../../src/components/EmptyItems'
 import { useRouter } from 'next/router'
 import { ModalAttendance } from './ModalAttendance'
 import { ModalAttendancesList } from './ModalAttendancesList'
+import { ModalCreateClassLesson } from './ModalCreateClassLesson'
 import style from './StudentsAbsences.module.scss'
 import { Loading } from '../../../components/Loading'
 
@@ -20,6 +21,7 @@ export function StudentsAbsences() {
     undefined,
   )
   const [modalAttendanceOpened, setModalAttendanceOpened] = useState<boolean>(false)
+  const [modalClassLessonOpened, setModalClassLessonOpened] = useState<boolean>(false)
   const [modalListOpened, setModalListOpened] = useState<boolean>(false)
   const [loadingStudents, setLoadingStudents] = useState<boolean>(true)
   const router = useRouter()
@@ -55,10 +57,16 @@ export function StudentsAbsences() {
         <button
           type="button"
           className={style.buttonAttendance}
-          onClick={() => selectedStudent && setModalAttendanceOpened(true)}
-          disabled={!selectedStudent}
+          onClick={() => setModalAttendanceOpened(true)}
         >
           Marcar presença
+        </button>
+        <button
+          type="button"
+          className={style.buttonAttendance}
+          onClick={() => setModalClassLessonOpened(true)}
+        >
+          Nova aula
         </button>
         <button
           type="button"
@@ -87,14 +95,17 @@ export function StudentsAbsences() {
         <EmptyItems text="Nenhum aluno foi encontrado" />
       )}
 
-      {modalAttendanceOpened && selectedStudent && (
+      {modalAttendanceOpened && (
         <ModalAttendance
-          studentId={selectedStudent._id}
           open={modalAttendanceOpened}
-          handleClose={() => {
-            setModalAttendanceOpened(false)
-            setSelectedStudent(undefined)
-          }}
+          handleClose={() => setModalAttendanceOpened(false)}
+        />
+      )}
+
+      {modalClassLessonOpened && (
+        <ModalCreateClassLesson
+          open={modalClassLessonOpened}
+          handleClose={() => setModalClassLessonOpened(false)}
         />
       )}
 
