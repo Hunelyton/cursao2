@@ -23,6 +23,10 @@ export class MockUsersRepository implements IUsersRepository {
     return this.users.find((user) => user._id.toString() === _id)
   }
 
+  async findByIdWithPassword(_id: string): Promise<User> {
+    return this.users.find((user) => user._id.toString() === _id)
+  }
+
   async update(filters: any, updateFields: any): Promise<void> {
     const fields = updateFields.$set
 

@@ -30,7 +30,7 @@ export function Warnings() {
         setWarnings(res.data.items)
       })
       .catch((err) => {
-        console.log('ERRO AO BUSCAR ADVERTÊNCIAS, ', err)
+        console.log('ERRO AO BUSCAR AVISOS, ', err)
       })
       .finally(() => {
         setLoadingWarnings(false)
@@ -48,14 +48,14 @@ export function Warnings() {
           loading={loadingWarnings}
           columns={columns}
           rows={warnings}
-          emptyText="Você não possui advertências"
+          emptyText="Você não possui avisos"
         />
       </div>
       <div className={style.viewMobile}>
         <ListMobile
           collapseItems={columns}
           items={warnings}
-          emptyText="Você não possui advertências"
+          emptyText="Você não possui avisos"
           loading={loadingWarnings}
           itemFields={fieldsMobile}
         />

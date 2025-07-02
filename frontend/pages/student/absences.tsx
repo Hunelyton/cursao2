@@ -1,3 +1,5 @@
+import { StudentAbsences } from '../../src/screens/Student/Absences'
+
 export default function AbsencesPage() {
-  return <h1>Faltas</h1>
+  return <StudentAbsences />
 }

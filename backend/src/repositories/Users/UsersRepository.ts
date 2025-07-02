@@ -36,6 +36,10 @@ export class UsersRepository implements IUsersRepository {
     return await this.model.findOne({ _id }).select('-password')
   }
 
+  async findByIdWithPassword(_id: string): Promise<User> {
+    return await this.model.findOne({ _id })
+  }
+
   async update(filters: any, updateFields: any): Promise<void> {
     await this.model.updateMany(filters, updateFields)
   }
@@ -54,5 +58,9 @@ export class UsersRepository implements IUsersRepository {
 
   async incrementWarningsAmount(idUser: string): Promise<void> {
     await this.model.updateOne({ _id: idUser }, { $inc: { warningsAmount: 1 } })
+  }
+
+  async findByCode(code: string): Promise<User | null> {
+    return await this.model.findOne({ code })
   }
 }
