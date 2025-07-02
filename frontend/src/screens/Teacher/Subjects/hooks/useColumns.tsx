@@ -1,8 +1,4 @@
-import {
-  faClipboard,
-  faGraduationCap,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons'
+import { faGraduationCap, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Subject } from '..'
 import style from '../Subjects.module.scss'
 import { CellFunctionParams } from '../../../../components/TableComponent/interfaces'
@@ -11,14 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 interface UseColumnsParams {
   handleDeleteSubject: (subject: Subject) => void
   handleAddStudents: (subject: Subject) => void
-  handleShowGrades: (subject: Subject) => void
 }
 
-export function useColumns({
-  handleDeleteSubject,
-  handleAddStudents,
-  handleShowGrades,
-}: UseColumnsParams) {
+export function useColumns({ handleDeleteSubject, handleAddStudents }: UseColumnsParams) {
   return [
     {
       headerName: 'Código',
@@ -55,15 +46,6 @@ export function useColumns({
               <FontAwesomeIcon icon={faGraduationCap} className={style.icon} />
             </button>
 
-            <button
-              onClick={() => {
-                handleShowGrades(params.data)
-              }}
-              className={style.showGradesButton}
-              type="button"
-            >
-              <FontAwesomeIcon icon={faClipboard} className={style.icon} />
-            </button>
 
             <button
               onClick={() => {

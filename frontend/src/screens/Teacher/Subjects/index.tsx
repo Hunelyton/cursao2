@@ -9,7 +9,6 @@ import { ModalAddStudents } from './ModalAddStudents'
 import style from './Subjects.module.scss'
 import { ListMobile } from '../../../components/ListMobile'
 import { useFieldsMobile } from './hooks/useFieldsMobile'
-import { ModalGrades } from './ModalGrades'
 
 export interface Subject {
   _id: string
@@ -30,7 +29,6 @@ export function Subjects() {
   )
   const [modalAddStudentsOpened, setModalAddStudentsOpened] =
     useState<boolean>(false)
-  const [modalGradesOpened, setModalGradesOpened] = useState<boolean>(false)
   const [loadingSubjects, setLoadingSubjects] = useState<boolean>(true)
   const [formModalOpened, setFormModalOpened] = useState<boolean>(false)
 
@@ -88,15 +86,10 @@ export function Subjects() {
     setSelectedSubject(subject)
   }
 
-  function handleShowGrades(subject: Subject) {
-    setModalGradesOpened(true)
-    setSelectedSubject(subject)
-  }
 
   const columns = useColumns({
     handleDeleteSubject,
     handleAddStudents,
-    handleShowGrades,
   })
 
   const fieldsMobile = useFieldsMobile()
@@ -152,16 +145,6 @@ export function Subjects() {
         />
       )}
 
-      {modalGradesOpened && selectedSubject && (
-        <ModalGrades
-          subjectData={selectedSubject}
-          open={modalGradesOpened}
-          handleClose={() => {
-            setModalGradesOpened(false)
-            setSelectedSubject(undefined)
-          }}
-        />
-      )}
     </>
   )
 }

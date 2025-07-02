@@ -5,6 +5,7 @@ import { CreateNewSubjectService } from '../useCases/Subject/CreateNewSubject/Cr
 import { DeleteSubjectService } from '../useCases/Subject/DeleteSubject/DeleteSubjectService.service'
 import { InsertStudentsInSubjectService } from '../useCases/Subject/InsertStudentInSubject/InsertStudentsInSubjectService.service'
 import { RemoveStudentsInSubjectService } from '../useCases/Subject/RemoveStudentInSubject/RemoveStudentsInSubjectService.service'
+import { ListSubjectsByStudentService } from '../useCases/Subject/ListSubjectsByStudent/ListSubjectsByStudentService.service'
 
 export class SubjectController {
   async listAllSubjects(req: Request, res: Response): Promise<Response> {
@@ -83,5 +84,14 @@ export class SubjectController {
     return res.status(202).json({
       message: 'Estudante(s) foram removidos da disciplina com sucesso.',
     })
+  }
+
+  async listByStudent(req: Request, res: Response): Promise<Response> {
+    const { _id: studentId } = req.user
+
+    const service = container.resolve(ListSubjectsByStudentService)
+    const subjects = await service.execute(studentId)
+
+    return res.status(200).json({ success: true, items: subjects })
   }
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { attendancesService } from '../../../services/attendancesService'
 import { classLessonsService } from '../../../services/classLessonsService'
 import { usersService } from '../../../services/usersService'
+import { subjectsService } from '../../../services/subjectsService'
 import { TableComponent } from '../../../components/TableComponent'
 import dayjs from 'dayjs'
 import style from './Absences.module.scss'
@@ -25,11 +26,16 @@ export function StudentAbsences() {
       Promise.all([
         classLessonsService.getAll(),
         attendancesService.listByStudent(user._id),
+        subjectsService.listByStudent(),
       ])
-        .then(([lessRes, attRes]) => {
+        .then(([lessRes, attRes, subRes]) => {
           const lessons = lessRes.data.items || []
           const attendances = attRes.data.items || []
-          const formatted = lessons.map((l: any) => {
+          const subjectsIds = (subRes.data.items || []).map((s: any) => s._id)
+          const filteredLessons = lessons.filter((l: any) =>
+            subjectsIds.includes(l.subjectId),
+          )
+          const formatted = filteredLessons.map((l: any) => {
             const present = attendances.some((a: any) =>
               dayjs(a.date).isSame(l.date, 'day'),
             )

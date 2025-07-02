@@ -6,6 +6,7 @@ const subjectsRoutes = express.Router()
 const subjectController = new SubjectController()
 
 subjectsRoutes.get('/', ensureAuthenticated, subjectController.listAllSubjects)
+subjectsRoutes.get('/student', ensureAuthenticated, subjectController.listByStudent)
 
 subjectsRoutes.post(
   '/',

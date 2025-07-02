@@ -68,4 +68,8 @@ export const subjectsService = {
       ...body,
     })
   },
+
+  listByStudent() {
+    return http.get('/subjects/student')
+  },
 }

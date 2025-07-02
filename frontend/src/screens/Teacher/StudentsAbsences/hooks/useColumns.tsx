@@ -1,6 +1,4 @@
 import { CellFunctionParams } from '../../../../components/TableComponent/interfaces'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye } from '@fortawesome/free-solid-svg-icons'
 import style from '../StudentsAbsences.module.scss'
 
 interface Params {
@@ -36,7 +34,7 @@ export function useColumns({ attendancePercentages, onViewAttendances }: Params)
           className={style.buttonView}
           onClick={() => onViewAttendances(params.data)}
         >
-          <FontAwesomeIcon icon={faEye} /> Ver presenças
+          Ver presenças
         </button>
       ),
     },
