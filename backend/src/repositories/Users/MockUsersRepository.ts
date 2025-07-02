@@ -9,6 +9,8 @@ export class MockUsersRepository implements IUsersRepository {
       ...newUserData,
       _id: new Types.ObjectId(),
       avatar: null,
+      isActive: newUserData.isActive ?? true,
+      monthlyPayments: newUserData.monthlyPayments ?? {},
     }
     this.users.push(newUser)
 

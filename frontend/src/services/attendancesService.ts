@@ -2,8 +2,8 @@ import http from '../api/http'
 
 export const attendancesService = {
 
-  create({ studentId, date, code, password }: any) {
-    const body = { studentId, date, code, password }
+  create({ studentId, date, subjectId, code, password }: any) {
+    const body = { studentId, date, subjectId, code, password }
 
     return http.post('/attendances', body)
   },

@@ -1,9 +1,11 @@
 import { ModalLayout } from '../../../../components/ModalLayout'
-import { FormEvent, useContext, useState } from 'react'
+import { FormEvent, useContext, useState, useEffect } from 'react'
 import { attendancesService } from '../../../../services/attendancesService'
 import { AlertContext } from '../../../../contexts/alertContext'
 import { CustomTextField } from '../../../../components/CustomTextField'
 import { Loading } from '../../../../components/Loading'
+import { subjectsService } from '../../../../services/subjectsService'
+import { MenuItem, Select, InputLabel, FormControl } from '@mui/material'
 
 interface Props {
   studentId: string
@@ -16,13 +18,27 @@ export function ModalAttendance({ open, handleClose, studentId }: Props) {
   const [code, setCode] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [subjectId, setSubjectId] = useState('')
+  const [subjects, setSubjects] = useState<any[]>([])
+
+  useEffect(() => {
+    if (open) {
+      subjectsService.getAll().then((res) => {
+        const items = res.data.items || []
+        const filtered = items.filter((s: any) =>
+          s.students?.includes(studentId),
+        )
+        setSubjects(filtered)
+      })
+    }
+  }, [open, studentId])
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setLoading(true)
     attendancesService
 
-      .create({ studentId, date: new Date(), code, password })
+      .create({ studentId, subjectId, date: new Date(), code, password })
 
       .then(() => {
         setAlertNotifyConfigs({
@@ -56,6 +72,22 @@ export function ModalAttendance({ open, handleClose, studentId }: Props) {
       submitButtonText="Confirmar"
       loading={loading}
     >
+      <FormControl fullWidth sx={{ marginBottom: '10px' }}>
+        <InputLabel id="subject-select-label">Disciplina</InputLabel>
+        <Select
+          labelId="subject-select-label"
+          value={subjectId}
+          label="Disciplina"
+          onChange={(e) => setSubjectId(e.target.value as string)}
+          required
+        >
+          {subjects.map((s) => (
+            <MenuItem key={s._id} value={s._id}>
+              {s.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       <CustomTextField label="Código" value={code} onChange={(e) => setCode(e.target.value)} />
       <CustomTextField label="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
     </ModalLayout>

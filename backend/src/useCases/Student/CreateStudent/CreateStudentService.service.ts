@@ -12,6 +12,8 @@ interface IRequest {
   name: string
   email: string
   password: string
+  isActive?: boolean
+  monthlyPayments?: any
 }
 
 interface IResponse {
@@ -36,6 +38,8 @@ export class CreateStudentService {
     email,
     password,
     idTeacher,
+    isActive = true,
+    monthlyPayments = {},
   }: IRequest): Promise<IResponse> {
     if (!name) throw new AppError('Nome de usuário não informado')
     if (!email) throw new AppError('E-mail do usuário não informado')
@@ -58,6 +62,8 @@ export class CreateStudentService {
       password: encryptedPassword,
       occupation: 'student',
       idTeacher,
+      isActive,
+      monthlyPayments,
     })
 
     return {

@@ -7,6 +7,8 @@ export interface INewUserDTO {
   password: string
   occupation: string
   idTeacher?: string
+  isActive?: boolean
+  monthlyPayments?: any
 }
 
 export interface IUsersRepository {

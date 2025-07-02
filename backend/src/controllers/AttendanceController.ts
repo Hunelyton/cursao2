@@ -6,9 +6,15 @@ import { ListAttendancesService } from '../useCases/Attendance/ListAttendances/L
 export class AttendanceController {
   async create(req: Request, res: Response): Promise<Response> {
 
-    const { studentId, date, code, password } = req.body
+    const { studentId, date, subjectId, code, password } = req.body
     const createAttendanceService = container.resolve(CreateAttendanceService)
-    await createAttendanceService.execute({ studentId, date, code, password })
+    await createAttendanceService.execute({
+      studentId,
+      date,
+      subjectId,
+      code,
+      password,
+    })
 
     return res.status(201).json({ success: true })
   }

@@ -15,6 +15,8 @@ export class UsersRepository implements IUsersRepository {
     email,
     occupation,
     idTeacher,
+    isActive = true,
+    monthlyPayments = {},
   }: INewUserDTO): Promise<User> {
     const newUser = await this.model.create({
       code,
@@ -23,6 +25,8 @@ export class UsersRepository implements IUsersRepository {
       email,
       occupation,
       teacher: idTeacher,
+      isActive,
+      monthlyPayments,
     })
     await newUser.save()
     return newUser
