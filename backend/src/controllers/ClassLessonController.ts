@@ -22,9 +22,9 @@ export class ClassLessonController {
 
   async update(req: Request, res: Response): Promise<Response> {
     const { id } = req.params
-    const { date, description } = req.body
+    const { date, description, subjectId } = req.body
     const service = container.resolve(UpdateClassLessonService)
-    await service.execute({ id, date, description })
+    await service.execute({ id, date, description, subjectId })
     return res.status(200).json({ success: true })
   }
 
