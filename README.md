@@ -32,13 +32,13 @@
  <li>Cadastro e gerenciamento das informações de alunos; </li>
  <li>Cadastro e gerenciamento de disciplinas com a opção de associar alunos a alguma disciplina; </li>
  <li>Gerenciamento de notas dos alunos;</li>
- <li>Cadastro/Gerenciamento de advertências;</li>
+ <li>Cadastro/Gerenciamento de avisos;</li>
  <li>Gerenciamento de faltas (ainda em desenvolvimento...);</li>
  <br>
  <h5>Com a permissão de aluno: </h5>
  <li>Login;</li>
  <li>Visualização de notas nas disciplinas; </li>
- <li>Visualização de advertências;</li>
+ <li>Visualização de avisos;</li>
  <li>Visualização de faltas (ainda em desenvolvimento...);</li>
  <br>
  

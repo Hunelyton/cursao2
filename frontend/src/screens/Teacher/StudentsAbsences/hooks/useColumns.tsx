@@ -18,7 +18,7 @@ export function useColumns({ handleOpenWarnings }: UseColumnsParams) {
       valueFormatter: (params: CellFunctionParams<any>) => params.value || '--',
     },
     {
-      headerName: 'Quantidade de advertências',
+      headerName: 'Quantidade de avisos',
       field: 'warningsAmount',
       valueFormatter: (params: CellFunctionParams<any>) => params?.value || 0,
     },
