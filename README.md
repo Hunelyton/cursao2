@@ -22,7 +22,7 @@
     - Express;
     - JWT (Controle de token/refresh-token);
     - Firebase (Armazenamento de imagens);
-    - MySQL (Banco de dados relacional);
+    - MongoDB (Banco de dados NoSQL);
     - JEST (Testes unitários);
 </ul>
 
@@ -42,27 +42,10 @@
  <li>Visualização de faltas (ainda em desenvolvimento...);</li>
  <br>
  
-<br>
-<h2>👷 Como testar? </h2>
-<h3>Entre com o seguinte link: </h3>
-<a href="https://gestor-escolar.vercel.app">gestor-escolar.vercel.app</a>
-<h3>Ou</h3>
-<li> Clone o repositório com: git clone https://github.com/johnatanso/gestor-escolar";
-<li> Entre em uma IDE de sua preferência ;
-<li> Instalar as dependências com o 'npm install';</li>
-<li> Execute o servidor na pasta back-end e depois o front-end;
-<li> Crie uma nova conta de professor;
-<li> Cadastre um novo aluno;</li>
-<li> Adicione o aluno em uma disciplina;</li>
-<li> Altere a nota do aluno;</li>
-<li> Cadastre uma advertências para o aluno;</li>
-<li> Entre com o login do aluno;
-<li> Veja se as informações estão de acordo;
+
+
     
 
-<br>
+
  
-<div>
- <h2>🎓 Autor</h2>
- <h3>Feito com 💜 by <a href="https://github.com/johnatanSO" target="_blank">Johnatan Santos</a></h3>
-</div>
+
