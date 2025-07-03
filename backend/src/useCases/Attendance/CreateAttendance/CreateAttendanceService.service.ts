@@ -34,7 +34,7 @@ export class CreateAttendanceService {
     code,
     password,
   }: INewAttendanceDTO): Promise<void> {
-    const normalizedDate = new Date(date)
+    const normalizedDate = date ? new Date(date) : new Date()
     let student = null
     if (studentId) {
       student = await this.usersRepository.findByIdWithPassword(studentId)
